@@ -1,0 +1,22 @@
+Jeremy DeGroot's skills assessment
+
+Requirements: maven to build, Java 8 to run
+
+The What
+
+Usage: java -jar degroot.jar [-t $numThreads] pathToDataFolder
+
+Reads all the simplified weblogs in a directory and prints the aggregated results to STDOUT. If $numThreads is not specified, it defaults to 3. If execution is terminated early, the program will attempt to finish the current file and save the state in the input directory. Rerunning the same command will resume where execution ended. If the files in the input directory is not readable, or are not in the expected tab-separated format (time, domain name, url), the program will exit with an error.
+
+Aggregation is done per domain per hour (from hh:00 to hh:59, not a moving window) stats like total requests, average and max are calculated atthe end of execution for the whole time range.
+
+The Why and How
+
+I chose Java 8 over 7 because I wanted to use some of the new concurrency features, like the LongAdder and the improved ConcurrencyHashMap API. Though regarding the latter, I don't think I used anything that didn't exist in Java 7. Also, I prefer to write my Futures as lambdas, given the option.
+
+For concurrency the ExecutorService has a great, simple API. I like the BufferedReader for files that could be large because it's memory efficient, and it works well with having one thread read while others do processing as opposed to say Files.lines() that reads all the lines at once. I decided to use the new Java.Time in favor of Joda because it keeps things portable and Joda says to do so in their own docs.
+
+Regards,
+Jeremy
+jeremy.degroot@gmail.com
+
